@@ -1,69 +1,33 @@
 
 import './App.css';
 import React from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import jsonData from './files/ElectricVehiclePopulationData.json'
+import { getFieldNames, getNewCarCountByYear } from './helpers/data-transformer';
 
 function App() {
 
-  const data = jsonData;
-  const fieldNameMap = getFieldNames();
+  //const newCarCountByYear = getNewCarCountByYear(jsonData.data);
+  const fieldNameMap = getFieldNames(jsonData); //key is field name, value is row index
 
+  let data = getNewCarCountByYear(fieldNameMap, jsonData.data, 2012);
 
-  console.log(fieldNameMap);
+  console.log("here",data);
   
 
   return (
     <div className="App">
+      <BarChart width={730} height={250} data={data}>
+      <CartesianGrid strokeDasharray="3 3" />
+      <XAxis dataKey="year" />
+      <YAxis />
+      <Tooltip />
+      <Legend />
+      <Bar dataKey="phevCount" fill="#8884d8" />
+      <Bar dataKey="evCount" fill="#82ca9d" />
+    </BarChart>
     </div>
   );
-
-  function getCarCountByState(data) {
-    const vehicleData = data;
-    const phevCountString = "phevCount";
-    const evCountString = "evCount";
-  
-    let stateMap = new Map();
-    vehicleData.forEach(row => {
-      const state = row[11];
-      const isPHEV = row[16] === "Plug-in Hybrid Electric Vehicle (PHEV)";
-      if (stateMap.has(state)) {
-        let phevCount = stateMap.get(state)[phevCountString];
-        let evCount = stateMap.get(state)[evCountString];
-        if (isPHEV) {
-          phevCount = stateMap.get(state)[phevCountString] + 1;
-        } else {
-          evCount = stateMap.get(state)[evCountString] + 1;
-        }
-        const value = {
-          evCount: evCount,
-          phevCount: phevCount
-        }
-        stateMap.set(state, value)
-      } else {
-        let evCount = 0;
-        let phevCount = 0;
-        if (isPHEV) {
-          phevCount += 1;
-        } else {
-          evCount += 1;
-        }
-        const value = {
-          evCount: evCount,
-          phevCount: phevCount
-        }
-        stateMap.set(state, value)
-      }
-    });
-
-    return stateMap;
-  }
-
-  function getFieldNames() {
-    const fieldMap = new Map();
-    jsonData.meta.view.columns.forEach((column, index) => fieldMap.set(column["fieldName"], index));
-    return fieldMap;
-  }
 
 }
 
