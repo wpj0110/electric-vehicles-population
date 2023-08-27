@@ -25,6 +25,37 @@ export function getNewCarCountByYear(fieldNameMap, data ,yearFilter) {
     return newTotalCarsByYearData;
 }
 
+export function getTotalCarCountByYear(fieldNameMap, data ,yearFilter) {
+    let totalCarsByYearData = [];
+    data.forEach(row => {
+      const year = row[fieldNameMap.get('model_year')];
+      if (year >= yearFilter) {
+        let phevIncrement = row[fieldNameMap.get('ev_type')] === "Plug-in Hybrid Electric Vehicle (PHEV)" ? 1 : 0;
+        let evIncrement = row[fieldNameMap.get('ev_type')] === "Battery Electric Vehicle (BEV)" ? 1 : 0;
+        const yearIndex = totalCarsByYearData.findIndex(obj => obj.year === year);
+        if (yearIndex < 0) {
+            totalCarsByYearData.push({year: year, phevCount: phevIncrement, evCount: evIncrement});
+        } else {
+            totalCarsByYearData[yearIndex].phevCount += phevIncrement;
+            totalCarsByYearData[yearIndex].evCount += evIncrement;
+        }
+      }
+    });
+    
+
+    totalCarsByYearData = totalCarsByYearData.sort((obj1, obj2) => obj1.year - obj2.year);
+
+    let initialEvCount = 0;
+    let initialPhevCount = 0;
+    totalCarsByYearData.forEach(elem => {
+        elem.phevCount += initialPhevCount;
+        initialPhevCount = elem.phevCount;
+        elem.evCount += initialEvCount;
+        initialEvCount = elem.evCount;
+    });
+    return totalCarsByYearData;
+}
+
 export  function getCarCountByState(data) {
     const vehicleData = data;
     const phevCountString = "phevCount";

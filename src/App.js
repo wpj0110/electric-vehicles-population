@@ -1,33 +1,36 @@
 
 import './App.css';
-import React from 'react';
+import {React, useState} from 'react';
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import jsonData from './files/ElectricVehiclePopulationData.json'
 import { getFieldNames, getNewCarCountByYear } from './helpers/data-transformer';
+import NewCarCountByYear from './components/NewCarCountByYear/NewCarCountByYear';
+import TotalCarCountByYear from './components/TotalCarCountByYear/TotalCarCountByYear';
 
 function App() {
 
   //const newCarCountByYear = getNewCarCountByYear(jsonData.data);
-  const fieldNameMap = getFieldNames(jsonData); //key is field name, value is row index
+  const jsonContents = jsonData;
+  const fieldNameMap = getFieldNames(jsonContents); //key is field name, value is row index;
 
-  let data = getNewCarCountByYear(fieldNameMap, jsonData.data, 2012);
-
-  console.log("here",data);
-  
+  const [displayChart, setDisplayChart] = useState('NewCarCountByYear');
 
   return (
     <div className="App">
-      <BarChart width={730} height={250} data={data}>
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="year" />
-      <YAxis />
-      <Tooltip />
-      <Legend />
-      <Bar dataKey="phevCount" fill="#8884d8" />
-      <Bar dataKey="evCount" fill="#82ca9d" />
-    </BarChart>
+      <div onClick={handleChange}>Click me</div>
+      {displayChart === 'NewCarCountByYear' ?<NewCarCountByYear jsonContents={jsonContents}></NewCarCountByYear> : null}
+      {displayChart === 'TotalCarCountByYear' ?<TotalCarCountByYear jsonContents={jsonContents}></TotalCarCountByYear> : null}
     </div>
   );
+
+  function handleChange() {
+    if (displayChart === 'NewCarCountByYear') {
+      setDisplayChart('TotalCarCountByYear');
+    } else {
+      setDisplayChart('NewCarCountByYear');
+    }
+
+  }
 
 }
 
