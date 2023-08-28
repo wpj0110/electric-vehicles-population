@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/electric-vehicles-population/static/css/main.e6c13ad2.css",
+    "main.js": "/electric-vehicles-population/static/js/main.d4385cd0.js",
+    "static/js/787.9bfaa89d.chunk.js": "/electric-vehicles-population/static/js/787.9bfaa89d.chunk.js",
+    "index.html": "/electric-vehicles-population/index.html",
+    "main.e6c13ad2.css.map": "/electric-vehicles-population/static/css/main.e6c13ad2.css.map",
+    "main.d4385cd0.js.map": "/electric-vehicles-population/static/js/main.d4385cd0.js.map",
+    "787.9bfaa89d.chunk.js.map": "/electric-vehicles-population/static/js/787.9bfaa89d.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.d4385cd0.js"
+  ]
+}
