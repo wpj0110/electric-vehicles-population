@@ -11,3 +11,9 @@ https://data.wa.gov/resource/f6w7-q2d2.json
 
 Recharts https://recharts.org/en-US/guide/installation
 
+
+#### Reminder To Self:
+To deploy, do:
+
+npm run build
+npm run deploy
